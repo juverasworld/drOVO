@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
 
     <style>
+      /* Existing styles remain unchanged */
       * {
         margin: 0;
         padding: 0;
@@ -367,11 +368,7 @@
         color: #111827;
         margin-bottom: 24px;
       }
-      .sam{
-        width: 100%;
-        /* border: 1px black solid; */
-        gap: 5px;
-      }
+   
       .cta-button{
         width: 100%;
         margin-top: 4px;
@@ -507,6 +504,7 @@
 
       .content-section {
         flex: 1;
+        /* border:10px solid black */
       }
 
       .tagline {
@@ -974,27 +972,182 @@
                 grid-template-columns: 1fr;
             }
         }
+      /* Add new styles for overlay and dropdown */
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .overlay-content {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #4a5568;
+      }
+
+      .overlay-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #1a202c;
+      }
+
+      .copy-option {
+        margin: 15px 0;
+        padding: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .copy-option:hover {
+        background: #f7fafc;
+        border-color: #38a169;
+      }
+
+      .copy-option.selected {
+        background: #f0fff4;
+        border-color: #38a169;
+      }
+
+      .copy-option-title {
+        font-weight: 600;
+        color: #1a202c;
+      }
+
+      .copy-option-reward {
+        font-size: 14px;
+        color: #4a5568;
+      }
+
+      .confirm-btn {
+        background: #1f2d3d;
+        color: white;
+        padding: 14px 28px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: all 0.2s ease;
+      }
+
+      .confirm-btn:hover {
+        background: #38a169;
+      }
+
+      .payment-options {
+        display: none;
+        margin-top: 20px;
+      }
+
+      .payment-btn {
+        background: #edf2f7;
+        color: #1a202c;
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        width: 48%;
+        margin: 1%;
+        transition: all 0.2s ease;
+      }
+
+      .payment-btn:hover {
+        background: #e2e8f0;
+      }
+
+   /* Dropdown styles */
+.sam {
+  position: relative;
+  display: flex;
+  z-index: 99px;
+  /* border:10px solid black; */
+  gap: 16px; /* Ensure spacing between buttons */
+}
+
+.session-dropdown {
+  position: absolute;
+  top: 100%; /* Position below the button */
+  left: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  display: none; /* Hidden by default */
+  z-index: 100;
+  min-width: 200px; /* Ensure sufficient width */
+  overflow: hidden;
+}
+
+.session-option {
+  display: block;
+  padding: 12px 20px;
+  color: #1a202c;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.session-option:hover {
+  background: #f7fafc;
+}
+
+/* Ensure dropdown is responsive */
+@media (max-width: 768px) {
+  .sam {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .session-dropdown {
+    width: 100%; /* Full width on mobile */
+    left: 0;
+  }
+}
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .overlay-content {
+          padding: 20px;
+        }
+        .payment-btn {
+          width: 100%;
+          margin: 5px 0;
+        }
+      }
     </style>
   </head>
   <body>
+    <!-- Existing header and main content -->
     <header class="header">
       <div class="nav-container">
         <div class="logo">
-          <div class="logo-icon">
-            
-            MFC</div>
-        MY FAMILY COMPANION
+          <div class="logo-icon">MFC</div>
+          MY FAMILY COMPANION
         </div>
-        <!-- <nav>
-          <ul class="nav-menu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#shop">Shop</a></li>
-            <li><a href="#writing">Writing</a></li>
-            <li><a href="#blog">Blog</a></li>
-          </ul>
-        </nav> -->
-        <a href="#contact" class="contact-btn">Presale Order</a>
+        <a href="#payment" class="contact-btn" onclick="showPaymentOptions('presale')">Presale Order</a>
       </div>
     </header>
 
@@ -1007,283 +1160,367 @@
           </div>
         </div>
         <div class="productivity-card">
-          <!-- <div class="productivity-title">Feel-Good<br />Productivity</div> -->
           <div class="productivity-subtitle">
-            Evoking true stories<br>and pratical insights.<br>from a concerned doctor.
+            Evoking true stories<br>and practical insights.<br>from a concerned doctor.
           </div>
         </div>
-        <!-- <div class="leaf-decoration"></div> -->
       </div>
 
       <div class="hero-content">
         <div class="author-tag">FROM THE AMAZON BEST SELLING AUTHOR</div>
-        <h1 class="hero-title"> My Family Companion</h1>
+        <h1 class="hero-title">My Family Companion</h1>
         <p class="hero-description">
-          Evoking true stories and pratical insights.from a concerned doctor.
+          Evoking true stories and practical insights from a concerned doctor.
         </p>
         <div class="cta-section">
-          <a href="#more-info" class="more-info-btn">Donate Copy </a>
-          <a href="#more-info" class="more-info-btn">Presale Order</a>
+          <a href="#donate" class="more-info-btn" onclick="showDonationOverlay()">Donate Copy</a>
+          <a href="#payment" class="more-info-btn" onclick="showPaymentOptions('presale')">Presale Order</a>
         </div>
-        <!-- <div class="social-proof">
-          <div class="user-avatars">
-            <div class="avatar"></div>
-            <div class="avatar"></div>
-            <div class="avatar"></div>
-            <div class="avatar"></div>
-          </div>
-          <div class="rating">
-            <div class="stars">★★★★★</div>
-            <div class="rating-text">From 3k+ readers</div>
-          </div>
-        </div> -->
       </div>
     </main>
+
+    <!-- Donation Overlay -->
+    <div class="overlay" id="donationOverlay">
+      <div class="overlay-content">
+        <span class="close-btn" onclick="closeOverlay()">&times;</span>
+        <h2 class="overlay-title">Donate Copies</h2>
+        <div class="copy-option" onclick="selectCopyOption(5)">
+          <div class="copy-option-title">5-10 Copies</div>
+          <div class="copy-option-reward">Receive a certificate</div>
+        </div>
+        <div class="copy-option" onclick="selectCopyOption(20)">
+          <div class="copy-option-title">20-50 Copies</div>
+          <div class="copy-option-reward">Website mention</div>
+        </div>
+        <div class="copy-option" onclick="selectCopyOption(100)">
+          <div class="copy-option-title">100+ Copies</div>
+          <div class="copy-option-reward">Website mention + Printing on paperback</div>
+        </div>
+        <div class="payment-options" id="paymentOptions">
+          <button class="payment-btn" onclick="processPayment('paystack')">Pay with Paystack</button>
+          <button class="payment-btn" onclick="processPayment('stripe')">Pay with Stripe</button>
+        </div>
+        <button class="confirm-btn" onclick="confirmDonation()">Confirm Selection</button>
+      </div>
+    </div>
+
+    <!-- Payment Overlay for Presale -->
+    <div class="overlay" id="paymentOverlay">
+      <div class="overlay-content">
+        <span class="close-btn" onclick="closeOverlay()">&times;</span>
+        <h2 class="overlay-title">Select Payment Method</h2>
+        <button class="payment-btn" onclick="processPayment('paystack')">Pay with Paystack</button>
+        <button class="payment-btn" onclick="processPayment('stripe')">Pay with Stripe</button>
+      </div>
+    </div>
+
+    <!-- Existing portfolio card with modified session button -->
     <div class="body">
       <div class="portfolio-card">
         <div class="content-section">
           <div class="tagline">About The Author</div>
-          <h1 class="main-heading">It's everything, you' ll ever need.</h1>
+          <h1 class="main-heading">It's everything, you'll ever need.</h1>
           <p class="description">
-            Dr. OVO was barely 10 years old when he watched his little sister die from something that should never have taken her life. Today, his work is preventing one maternal and child death every 30 seconds in communities across Africa. If you have ever been bothered, what you need to know medically as it regards sex, who to marry, how to plan for pregnancy and safe delivery, raise kids that are always healthy, and retain your spark as a woman, or as a couple, this book covers it all.
-
+            Dr. OVO was barely 10 years old when he watched his little sister die from something that should never have taken her life...
           </p>
           <div class="stats-container">
-            <!-- <div class="stat-item">
-              <span class="stat-number green">12</span
-              ><span class="stat-suffix green">k</span
-              ><span class="stat-label">Loyal<br />Followers</span>
-            </div> -->
             <div class="stat-item">
-              <span class="stat-number blue">14</span
-              ><span class="stat-suffix blue">+</span
-              ><span class="stat-label">Certificate<br />Achievement</span>
+              <span class="stat-number blue">14</span><span class="stat-suffix blue">+</span>
+              <span class="stat-label">Certificate<br />Achievement</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number orange">15</span
-              ><span class="stat-label">Years<br />Experience</span>
+              <span class="stat-number orange">15</span>
+              <span class="stat-label">Years<br />Experience</span>
             </div>
           </div>
           <div class="sam">
-
-            <button class="cta-button" onclick="handleMoreInfo()">
-              Book a session
-            </button>
-            <button class="cta-button" onclick="handleMoreInfo()">
-              Invite to Speak
-            </button>
+            <button class="cta-button" onclick="toggleSessionDropdown()">Book a session</button>
+            <div class="session-dropdown" id="sessionDropdown">
+              <a href="https://calendly.com/your-calendly-link" target="_blank" class="session-option">Join Free Weekly Sessions</a>
+              <a href="https://zoom.us/j/your-zoom-id" target="_blank" class="session-option">Book Private Session</a>
+            </div>
+            <button class="cta-button" onclick="handleMoreInfo()">Invite to Speak</button>
           </div>
         </div>
         <div class="profile-section">
           <div class="profile-image">
-            <img src="/author.jpg" alt="Artemy Profile" />
+            <img src="/author.jpg" alt="Dr Oto Profile" />
           </div>
           <div class="chat-bubble">
             <div class="chat-header">Dr Otobo Victor</div>
-            <div>
-              <!-- Hey Guy ! My name is<br /><strong>Artemy Desminsky</strong> -->
-            </div>
           </div>
         </div>
       </div>
-   
-   
     </div>
-   <div class="body">
-    <div class="testimonial-section">
-        <div class="section-header">
-            <div class="section-label">TESTIMONIALS</div>
-            <h2 class="section-title">What my readers say</h2>
-        </div>
-
-        <div class="testimonials-marquee">
-            <div class="marquee-content">
-                <!-- First set of cards -->
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                    <p class="testimonial-text">
-                        "
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
-                        
-                        "
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AC</div>
-                        <div class="author-info">
-                            <div class="author-name">Alison Christian</div>
-                            <div class="author-title">USA Today</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                    <p class="testimonial-text">
-                        "
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
-                        
-                        "
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AC</div>
-                        <div class="author-info">
-                            <div class="author-name">Alison Christian</div>
-                            <div class="author-title">USA Today</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                    <p class="testimonial-text">
-                        "
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
-                        
-                        "
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">M</div>
-                        <div class="author-info">
-                            <div class="author-name">Maria</div>
-                            <div class="author-title">Goodreads</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Duplicate set of cards for seamless scrolling -->
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                    <p class="testimonial-text">
-                        "
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
-                        
-                        "
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AC</div>
-                        <div class="author-info">
-                            <div class="author-name">Alison Christian</div>
-                            <div class="author-title">USA Today</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                    <p class="testimonial-text">
-                        "
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
-                        
-                        "
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AC</div>
-                        <div class="author-info">
-                            <div class="author-name">Alison Christian</div>
-                            <div class="author-title">USA Today</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                        <span class="star">★</span>
-                    </div>
-                    <p class="testimonial-text">
-                        "
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
-                        
-                        "
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">M</div>
-                        <div class="author-info">
-                            <div class="author-name">Maria</div>
-                            <div class="author-title">Goodreads</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-   </div>
-   <div class="bodys">
-
-     <div class="section">
-       <div class="section-title">
-           <span>Podcast & Publications</span>
-           <button class="view-more">View more <span>&rarr;</span></button>
-       </div>
-       <div class="cards-container">
-           <!-- <div class="card">
-               <div class="card-icon green">&#9658;</div>
-               <div class="card-content">
-                   <div class="card-title">Thirty days get a jobs</div>
-                   <div class="card-subtitle">Self help • 12 episodes</div>
-               </div>
-           </div>
-           <div class="card">
-               <div class="card-icon black">N</div>
-               <div class="card-content">
-                   <div class="card-title">Open letter for fresh graduate</div>
-                   <div class="card-subtitle">Self help • 12 episodes</div>
-               </div>
-           </div>
-           <div class="card">
-               <div class="card-icon black">N</div>
-               <div class="card-content">
-                   <div class="card-title">Advice for initial job interviews</div>
-                   <div class="card-subtitle">Self help • 12 episodes</div>
-               </div>
-           </div> -->
-           <div class="card">
-               <div class="card-icon green">&#9658;</div>
-               <div class="card-content">
-                   <div class="card-title">Work Life Balance Podcast</div>
-                   <div class="card-subtitle">Self help • 12 episodes</div>
-               </div>
-           </div>
-           <div class="card">
-               <div class="card-icon black">N</div>
-               <div class="card-content">
-                   <div class="card-title">You should fail first. It's a key</div>
-                   <div class="card-subtitle">Self help • 12 episodes</div>
-               </div>
-           </div>
-       </div>
-   </div>
-   </div>
+    <div class="body">
+      <div class="testimonial-section">
+          <div class="section-header">
+              <div class="section-label">TESTIMONIALS</div>
+              <h2 class="section-title">What my readers say</h2>
+          </div>
+  
+          <div class="testimonials-marquee">
+              <div class="marquee-content">
+                  <!-- First set of cards -->
+                  <div class="testimonial-card">
+                      <div class="stars">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                      </div>
+                      <p class="testimonial-text">
+                          "
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
+                          
+                          "
+                      </p>
+                      <div class="testimonial-author">
+                          <div class="author-avatar">AC</div>
+                          <div class="author-info">
+                              <div class="author-name">Alison Christian</div>
+                              <div class="author-title">USA Today</div>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="testimonial-card">
+                      <div class="stars">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                      </div>
+                      <p class="testimonial-text">
+                          "
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
+                          
+                          "
+                      </p>
+                      <div class="testimonial-author">
+                          <div class="author-avatar">AC</div>
+                          <div class="author-info">
+                              <div class="author-name">Alison Christian</div>
+                              <div class="author-title">USA Today</div>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="testimonial-card">
+                      <div class="stars">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                      </div>
+                      <p class="testimonial-text">
+                          "
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
+                          
+                          "
+                      </p>
+                      <div class="testimonial-author">
+                          <div class="author-avatar">M</div>
+                          <div class="author-info">
+                              <div class="author-name">Maria</div>
+                              <div class="author-title">Goodreads</div>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <!-- Duplicate set of cards for seamless scrolling -->
+                  <div class="testimonial-card">
+                      <div class="stars">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                      </div>
+                      <p class="testimonial-text">
+                          "
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
+                          
+                          "
+                      </p>
+                      <div class="testimonial-author">
+                          <div class="author-avatar">AC</div>
+                          <div class="author-info">
+                              <div class="author-name">Alison Christian</div>
+                              <div class="author-title">USA Today</div>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="testimonial-card">
+                      <div class="stars">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                      </div>
+                      <p class="testimonial-text">
+                          "
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
+                          
+                          "
+                      </p>
+                      <div class="testimonial-author">
+                          <div class="author-avatar">AC</div>
+                          <div class="author-info">
+                              <div class="author-name">Alison Christian</div>
+                              <div class="author-title">USA Today</div>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="testimonial-card">
+                      <div class="stars">
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                          <span class="star">★</span>
+                      </div>
+                      <p class="testimonial-text">
+                          "
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit delectus, cum incidunt voluptatum nulla in debitis hic aut odio dolorum porro culpa illum itaque quasi. Voluptate magnam distinctio rem suscipit.
+                          
+                          "
+                      </p>
+                      <div class="testimonial-author">
+                          <div class="author-avatar">M</div>
+                          <div class="author-info">
+                              <div class="author-name">Maria</div>
+                              <div class="author-title">Goodreads</div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+     </div>
+     <div class="bodys">
+  
+       <div class="section">
+         <div class="section-title">
+             <span>Podcast & Publications</span>
+             <button class="view-more">View more <span>&rarr;</span></button>
+         </div>
+         <div class="cards-container">
+             <!-- <div class="card">
+                 <div class="card-icon green">&#9658;</div>
+                 <div class="card-content">
+                     <div class="card-title">Thirty days get a jobs</div>
+                     <div class="card-subtitle">Self help • 12 episodes</div>
+                 </div>
+             </div>
+             <div class="card">
+                 <div class="card-icon black">N</div>
+                 <div class="card-content">
+                     <div class="card-title">Open letter for fresh graduate</div>
+                     <div class="card-subtitle">Self help • 12 episodes</div>
+                 </div>
+             </div>
+             <div class="card">
+                 <div class="card-icon black">N</div>
+                 <div class="card-content">
+                     <div class="card-title">Advice for initial job interviews</div>
+                     <div class="card-subtitle">Self help • 12 episodes</div>
+                 </div>
+             </div> -->
+             <div class="card">
+                 <div class="card-icon green">&#9658;</div>
+                 <div class="card-content">
+                     <div class="card-title">Work Life Balance Podcast</div>
+                     <div class="card-subtitle">Self help • 12 episodes</div>
+                 </div>
+             </div>
+             <div class="card">
+                 <div class="card-icon black">N</div>
+                 <div class="card-content">
+                     <div class="card-title">You should fail first. It's a key</div>
+                     <div class="card-subtitle">Self help • 12 episodes</div>
+                 </div>
+             </div>
+         </div>
+     </div>
+    
     <script>
+      let selectedCopies = 0;
+
+      function showDonationOverlay() {
+        document.getElementById('donationOverlay').style.display = 'flex';
+        document.getElementById('paymentOptions').style.display = 'none';
+      }
+
+      function showPaymentOptions(type) {
+        document.getElementById('paymentOverlay').style.display = 'flex';
+        // Store type in a data attribute or global variable if needed
+        document.getElementById('paymentOverlay').dataset.type = type;
+      }
+
+      function closeOverlay() {
+        document.getElementById('donationOverlay').style.display = 'none';
+        document.getElementById('paymentOverlay').style.display = 'none';
+        document.getElementById('paymentOptions').style.display = 'none';
+        // Reset selection
+        selectedCopies = 0;
+        document.querySelectorAll('.copy-option').forEach(opt => opt.classList.remove('selected'));
+      }
+
+      function selectCopyOption(copies) {
+        selectedCopies = copies;
+        document.querySelectorAll('.copy-option').forEach(opt => opt.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+      }
+
+      function confirmDonation() {
+        if (selectedCopies === 0) {
+          alert('Please select a donation option');
+          return;
+        }
+        document.getElementById('paymentOptions').style.display = 'flex';
+      }
+
+      function processPayment(method) {
+        // Placeholder for payment processing
+        // In a real application, integrate Paystack/Stripe SDK here
+        const type = document.getElementById('paymentOverlay').dataset.type || 'donation';
+        alert(`Processing ${method} payment for ${type}${type === 'donation' ? ` (${selectedCopies} copies)` : ''}`);
+        closeOverlay();
+        // Redirect to actual payment gateway
+        // Example: window.location.href = `https://paystack.com/pay/your-payment-link`;
+      }
+
+      function toggleSessionDropdown() {
+  const dropdown = document.getElementById('sessionDropdown');
+  const isVisible = dropdown.style.display === 'block';
+  dropdown.style.display = isVisible ? 'none' : 'block';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const dropdown = document.getElementById('sessionDropdown');
+  const button = document.querySelector('.sam .cta-button'); // Target the specific button
+  if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+    dropdown.style.display = 'none';
+  }
+});
+
+      // Existing JavaScript functions remain unchanged
+      function handleMoreInfo() {
+        const button = document.querySelector(".cta-button");
+        button.style.transform = "translateY(1px)";
+        setTimeout(() => {
+          button.style.transform = "translateY(-2px)";
+          alert("Invite to Speak feature would redirect to contact form");
+        }, 150);
+      }
+
+      // Existing parallax, scroll, and animation scripts remain unchanged
+    </script>
+     <script>
       // Add subtle parallax effect
       document.addEventListener("mousemove", (e) => {
         const section = document.querySelector(".testimonial-sections");
