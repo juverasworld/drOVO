@@ -1080,26 +1080,30 @@
         background: #e2e8f0;
       }
 
-   /* Dropdown styles */
+/* Dropdown styles */
 .sam {
   position: relative;
   display: flex;
-  z-index: 99px;
-  /* border:10px solid black; */
-  gap: 16px; /* Ensure spacing between buttons */
+  gap: 16px;
+  z-index: 10; /* Ensure .sam is above other elements */
+}
+
+.cta-button {
+  position: relative; /* Anchor for dropdown */
+  z-index: 11; /* Ensure button is above dropdown */
 }
 
 .session-dropdown {
   position: absolute;
-  top: 100%; /* Position below the button */
-  left: 0;
+  top: calc(100% + 8px); /* Position directly below button with slight gap */
+  left: 0; /* Align with left edge of button */
   background: white;
   border-radius: 8px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   display: none; /* Hidden by default */
-  z-index: 100;
-  min-width: 200px; /* Ensure sufficient width */
-  overflow: hidden;
+  z-index: 100; /* Ensure dropdown is above other content */
+  min-width: 200px; /* Sufficient width */
+  overflow: visible; /* Prevent clipping */
 }
 
 .session-option {
@@ -1116,7 +1120,12 @@
   background: #f7fafc;
 }
 
-/* Ensure dropdown is responsive */
+/* Ensure parent containers don't clip the dropdown */
+.portfolio-card {
+  overflow: visible !important; /* Prevent clipping */
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .sam {
     flex-direction: column;
@@ -1215,13 +1224,50 @@
     </div>
 
     <!-- Existing portfolio card with modified session button -->
-    <div class="body">
+    <!-- <div class="body">
       <div class="portfolio-card">
         <div class="content-section">
           <div class="tagline">About The Author</div>
           <h1 class="main-heading">It's everything, you'll ever need.</h1>
           <p class="description">
             Dr. OVO was barely 10 years old when he watched his little sister die from something that should never have taken her life...
+          </p>
+          <div class="stats-container">
+            <div class="stat-item">
+              <span class="stat-number blue">14</span><span class="stat-suffix blue">+</span>
+              <span class="stat-label">Certificate<br />Achievement</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number orange">15</span>
+              <span class="stat-label">Years<br />Experience</span>
+            </div>
+          </div>
+          <div class="sam">
+            <button class="cta-button" onclick="toggleSessionDropdown()">Book a session</button>
+            <div class="session-dropdown" id="sessionDropdown">
+              <a href="https://calendly.com/your-calendly-link" target="_blank" class="session-option">Join Free Weekly Sessions</a>
+              <a href="https://zoom.us/j/your-zoom-id" target="_blank" class="session-option">Book Private Session</a>
+            </div>
+            <button class="cta-button" onclick="handleMoreInfo()">Invite to Speak</button>
+          </div>
+        </div>
+        <div class="profile-section">
+          <div class="profile-image">
+            <img src="/author.jpg" alt="Dr Oto Profile" />
+          </div>
+          <div class="chat-bubble">
+            <div class="chat-header">Dr Otobo Victor</div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="body">
+      <div class="portfolio-card">
+        <div class="content-section">
+          <div class="tagline">About The Author</div>
+          <h1 class="main-heading">It's everything, you'll ever need.</h1>
+          <p class="description">
+            Dr. OVO was barely 10 years old when he watched his little sister die from something that should never have taken her life. Today, his work is preventing one maternal and child death every 30 seconds in communities across Africa...
           </p>
           <div class="stats-container">
             <div class="stat-item">
@@ -1502,8 +1548,8 @@
 // Close dropdown when clicking outside
 document.addEventListener('click', (e) => {
   const dropdown = document.getElementById('sessionDropdown');
-  const button = document.querySelector('.sam .cta-button'); // Target the specific button
-  if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+  const button = e.target.closest('.sam .cta-button'); // Target the specific button
+  if (!dropdown.contains(e.target) && !button) {
     dropdown.style.display = 'none';
   }
 });
